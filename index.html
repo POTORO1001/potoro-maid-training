@@ -485,6 +485,29 @@
       padding: 12px 24px;
     }
 
+
+    .sound-toggle {
+      position: fixed;
+      right: 18px;
+      top: 18px;
+      z-index: 50;
+      border: 0;
+      border-radius: 999px;
+      padding: 10px 16px;
+      color: var(--pink-dark);
+      background: rgba(255, 255, 255, 0.86);
+      border: 2px solid rgba(255, 207, 228, 0.9);
+      box-shadow: 0 8px 18px rgba(126, 64, 98, 0.14);
+      font-weight: 900;
+      font-size: clamp(12px, 1.1vw, 15px);
+      cursor: pointer;
+      backdrop-filter: blur(8px);
+    }
+
+    .sound-toggle:active {
+      transform: translateY(1px);
+    }
+
     /* ================================
        結果画面
     ================================= */
@@ -639,6 +662,7 @@
   </div>
 
   <main class="app">
+    <button id="soundToggle" class="sound-toggle" onclick="toggleBgm()">♪ BGM OFF</button>
     <section id="startScreen" class="screen title-screen active">
       <div class="title-layer">
         <div class="title-panel">
@@ -738,6 +762,13 @@
       </div>
     </section>
   </main>
+
+
+  <audio id="seClick" src="audio/click.mp3" preload="auto"></audio>
+  <audio id="seCorrect" src="audio/correct.mp3" preload="auto"></audio>
+  <audio id="seWrong" src="audio/wrong.mp3" preload="auto"></audio>
+  <audio id="seMagic" src="audio/magic.mp3" preload="auto"></audio>
+  <audio id="bgmMain" src="audio/bgm_main.mp3" preload="auto" loop></audio>
 
   <script>
     // ============================================================
@@ -1169,6 +1200,112 @@
 
     const CATEGORY_KEYS = ["接客力", "会話力", "安心安全", "気配り", "ポ・トロ理解度"];
 
+    // ============================================================
+    // 効果音・BGM
+    //
+    // audio/ に以下のファイルを配置してください。
+    // click.mp3
+    // correct.mp3
+    // wrong.mp3
+    // magic.mp3
+    // bgm_main.mp3
+    //
+    // iPadでは、ユーザー操作後でないと音が鳴らない仕様があります。
+    // そのため、研修開始ボタンなどを押した後にBGM開始を試みます。
+    // ============================================================
+
+    let bgmEnabled = false;
+    let audioUnlocked = false;
+
+    function getAudio(id) {
+      return document.getElementById(id);
+    }
+
+    function unlockAudio() {
+      if (audioUnlocked) return;
+      audioUnlocked = true;
+
+      const audioIds = ["seClick", "seCorrect", "seWrong", "seMagic", "bgmMain"];
+      audioIds.forEach(id => {
+        const audio = getAudio(id);
+        if (!audio) return;
+
+        audio.volume = id === "bgmMain" ? 0.28 : 0.72;
+
+        try {
+          audio.load();
+        } catch (error) {
+          console.warn("audio load skipped:", id, error);
+        }
+      });
+    }
+
+    function playSe(id) {
+      unlockAudio();
+
+      const audio = getAudio(id);
+      if (!audio) return;
+
+      try {
+        audio.currentTime = 0;
+        audio.play().catch(() => {});
+      } catch (error) {
+        console.warn("sound skipped:", id, error);
+      }
+    }
+
+    function startBgm() {
+      unlockAudio();
+
+      const bgm = getAudio("bgmMain");
+      if (!bgm) return;
+
+      try {
+        bgm.volume = 0.28;
+        bgm.play().then(() => {
+          bgmEnabled = true;
+          updateSoundButton();
+        }).catch(() => {
+          bgmEnabled = false;
+          updateSoundButton();
+        });
+      } catch (error) {
+        console.warn("bgm skipped:", error);
+      }
+    }
+
+    function stopBgm() {
+      const bgm = getAudio("bgmMain");
+      if (!bgm) return;
+
+      bgm.pause();
+      bgmEnabled = false;
+      updateSoundButton();
+    }
+
+    function toggleBgm() {
+      playSe("seClick");
+
+      if (bgmEnabled) {
+        stopBgm();
+      } else {
+        startBgm();
+      }
+    }
+
+    function updateSoundButton() {
+      const button = document.getElementById("soundToggle");
+      if (!button) return;
+      button.textContent = bgmEnabled ? "♪ BGM ON" : "♪ BGM OFF";
+    }
+
+    document.addEventListener("click", event => {
+      if (event.target.closest("button")) {
+        unlockAudio();
+      }
+    }, { passive: true });
+
+
     let flatQuestions = [];
     let currentIndex = 0;
     let correct = 0;
@@ -1206,14 +1343,18 @@
     }
 
     function goStart() {
+      playSe("seClick");
       showScreen("startScreen");
     }
 
     function showHowTo() {
+      playSe("seClick");
       showScreen("howToScreen");
     }
 
     function startGame() {
+      playSe("seClick");
+      startBgm();
       buildFlatQuestions();
       currentIndex = 0;
       correct = 0;
@@ -1278,12 +1419,14 @@
       const feedback = document.getElementById("feedback");
 
       if (isCorrect) {
+        playSe("seCorrect");
         correct += 1;
         scores[q.category] += 10;
         feedback.className = "feedback ok";
         feedback.textContent = `正解です♡ ${q.explain}`;
         document.getElementById("dialogueText").textContent = `素晴らしいです♡ ${q.explain}`;
       } else {
+        playSe("seWrong");
         feedback.className = "feedback ng";
         feedback.textContent = `不正解です。正解は「${q.choices[q.answer]}」。${q.explain}`;
         document.getElementById("dialogueText").textContent = `大丈夫です、一緒に確認しましょう♡ 正解は「${q.choices[q.answer]}」です。`;
@@ -1294,6 +1437,7 @@
     }
 
     function nextQuestion() {
+      playSe("seClick");
       currentIndex += 1;
 
       if (currentIndex >= flatQuestions.length) {
@@ -1306,6 +1450,7 @@
 
     function showResult() {
       document.getElementById("progressBar").style.width = "100%";
+      playSe("seMagic");
       showScreen("resultScreen");
 
       const total = flatQuestions.length;
