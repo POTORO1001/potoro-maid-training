@@ -635,8 +635,76 @@
     ================================= */
     .result-screen {
       background:
-        linear-gradient(90deg, rgba(255, 247, 251, 0.45), rgba(255, 255, 255, 0.15)),
-        url("img/bg_room.jpg") center center / cover no-repeat;
+        linear-gradient(90deg, rgba(255, 247, 251, 0.52), rgba(255, 255, 255, 0.16)),
+        url("img/bg_result.jpg") center center / cover no-repeat;
+    }
+
+
+    .certificate-title {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin: 8px 0 2px;
+      padding: 8px 18px;
+      border-radius: 999px;
+      background: rgba(255, 248, 252, 0.92);
+      border: 2px solid rgba(255, 199, 225, 0.95);
+      color: var(--pink-dark);
+      font-size: clamp(14px, 1.3vw, 18px);
+      font-weight: 1000;
+      box-shadow: 0 8px 16px rgba(126, 64, 98, 0.12);
+    }
+
+    .certificate-name {
+      margin: 12px 0 8px;
+      padding: 12px 18px;
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.82);
+      border: 1px dashed rgba(223, 92, 155, 0.42);
+      font-size: clamp(15px, 1.35vw, 19px);
+      font-weight: 900;
+      color: var(--brown);
+      line-height: 1.6;
+    }
+
+    .review-box {
+      margin-top: 16px;
+      padding: 15px 18px;
+      border-radius: 20px;
+      background: rgba(255, 248, 252, 0.88);
+      border: 2px solid rgba(255, 214, 232, 0.9);
+      font-size: clamp(14px, 1.18vw, 17px);
+      line-height: 1.72;
+      font-weight: 850;
+    }
+
+    .review-box strong {
+      color: var(--pink-dark);
+    }
+
+    .final-hearts {
+      margin-top: 8px;
+      font-size: clamp(24px, 2.6vw, 38px);
+      color: #ff6faa;
+      text-shadow: 0 2px 0 #fff;
+      letter-spacing: 0.08em;
+      font-weight: 1000;
+    }
+
+    .completion-stamp {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 14px;
+      padding: 10px 18px;
+      border-radius: 999px;
+      color: #fff;
+      background: linear-gradient(135deg, var(--pink), var(--purple));
+      font-size: clamp(14px, 1.35vw, 19px);
+      font-weight: 1000;
+      box-shadow: 0 12px 22px rgba(255, 143, 189, 0.28);
+      transform: rotate(-2deg);
     }
 
     .result-layout {
@@ -652,8 +720,8 @@
     .result-panel {
       padding: clamp(22px, 3vw, 42px);
       border-radius: 32px;
-      background: rgba(255, 255, 255, 0.84);
-      border: 2px solid rgba(255, 255, 255, 0.92);
+      background: rgba(255, 255, 255, 0.88);
+      border: 3px solid rgba(255, 206, 228, 0.96);
       box-shadow: var(--shadow);
       backdrop-filter: blur(10px);
     }
@@ -930,18 +998,34 @@
     <section id="resultScreen" class="screen result-screen">
       <div class="result-layout">
         <div class="result-panel">
-          <div class="badge">RESULT</div>
-          <h2>研修結果</h2>
+          <div class="badge">TRAINING COMPLETE</div>
+          <div class="certificate-title">♡ PO・TORO 研修修了証 ♡</div>
+          <h2>新人メイド研修 修了</h2>
+          <div class="certificate-name">
+            本日の研修を最後まで受講しました。<br>
+            ご帰宅されたご主人様を笑顔でご出発させるための基本を確認できました♡
+          </div>
+
           <div id="rank" class="rank">A</div>
           <p id="resultMessage" class="result-message"></p>
+
+          <div class="review-box">
+            <strong>接客満足度</strong>
+            <div id="finalHearts" class="final-hearts">♡♡♡♡♡</div>
+            <div id="weakPointComment"></div>
+          </div>
+
           <div id="scoreList" class="score-list"></div>
+
+          <div class="completion-stamp">たいへんよくできました♡</div>
+
           <div class="result-buttons">
             <button class="btn" onclick="restartGame()">もう一度研修する</button>
             <button class="btn secondary" onclick="goStart()">タイトルへ戻る</button>
           </div>
         </div>
         <div class="result-side">
-          <img src="img/maid_teacher.png" alt="先生メイド" />
+          <img src="img/maid_teacher_smile.png" alt="笑顔の先生メイド" />
         </div>
       </div>
     </section>
@@ -2356,7 +2440,48 @@
       document.getElementById("resultMessage").textContent =
         `${correct}/${total}問正解。${message}`;
 
+      renderFinalCertificateDetails();
       renderScoreList();
+    }
+
+    function renderFinalCertificateDetails() {
+      const hearts = document.getElementById("finalHearts");
+      const weakPoint = document.getElementById("weakPointComment");
+
+      if (hearts) {
+        const safeScore = Math.max(0, Math.min(5, satisfactionScore || 0));
+        hearts.textContent = "♥".repeat(safeScore) + "♡".repeat(5 - safeScore);
+      }
+
+      if (!weakPoint) return;
+
+      let weakestKey = CATEGORY_KEYS[0];
+      let weakestPercent = 101;
+
+      CATEGORY_KEYS.forEach(key => {
+        const max = countCategoryQuestions(key) * 10;
+        const value = scores[key];
+        const percent = max === 0 ? 100 : Math.round((value / max) * 100);
+
+        if (percent < weakestPercent) {
+          weakestPercent = percent;
+          weakestKey = key;
+        }
+      });
+
+      const comments = {
+        "接客力": "次は、お出迎え・席案内・お見送りの基本動作をさらに意識しましょう♡",
+        "会話力": "次は、リアクション・褒め・質問の流れをもっと自然に使えるよう練習しましょう♡",
+        "安心安全": "次は、個人情報・接触NG・前金制など、安全ルールを重点的に復習しましょう♡",
+        "気配り": "次は、ドリンク・スマホ・立ち位置など、ご主人様の様子を見る意識を高めましょう♡",
+        "ポ・トロ理解度": "次は、まじかるわーど・料金・ハウスルールをもう一度確認しましょう♡"
+      };
+
+      if (weakestPercent >= 90) {
+        weakPoint.innerHTML = "<strong>振り返り：</strong>全体的にとても良い理解度です♡ この調子で実際のお給仕でも笑顔を大切にしましょう。";
+      } else {
+        weakPoint.innerHTML = `<strong>復習おすすめ：</strong>${comments[weakestKey]}`;
+      }
     }
 
     function renderScoreList() {
