@@ -325,6 +325,41 @@
       to { opacity: 1; transform: translateX(0); }
     }
 
+    .guest {
+      position: absolute;
+      left: 4%;
+      bottom: 0;
+      height: min(56%, 460px);
+      max-width: 34%;
+      object-fit: contain;
+      object-position: bottom left;
+      filter: drop-shadow(0 16px 20px rgba(88, 38, 65, 0.2));
+      pointer-events: none;
+      transform-origin: bottom left;
+      animation: guestIn 0.38s ease both;
+      display: none;
+    }
+
+    .guest.show {
+      display: block;
+    }
+
+    @keyframes guestIn {
+      from { opacity: 0; transform: translateX(-22px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    .teacher.with-guest {
+      right: 1%;
+      height: min(80%, 680px);
+      max-width: 34%;
+    }
+
+    .info-card.with-guest {
+      left: 30%;
+      width: min(38vw, 560px);
+    }
+
     .info-card {
       position: absolute;
       left: 2%;
@@ -392,6 +427,7 @@
       line-height: 1.72;
       font-weight: 850;
       letter-spacing: 0.02em;
+      white-space: pre-line;
     }
 
     .question-panel {
@@ -630,6 +666,22 @@
         height: 86%;
       }
 
+      .teacher.with-guest {
+        height: 76%;
+        max-width: 32%;
+      }
+
+      .guest {
+        left: 2%;
+        height: 50%;
+        max-width: 30%;
+      }
+
+      .info-card.with-guest {
+        left: 28%;
+        width: 40vw;
+      }
+
       .info-card {
         width: 55vw;
         top: 2%;
@@ -722,7 +774,8 @@
             <h2 id="chapterTitle">メイド名を決めよう</h2>
             <p id="chapterNote"></p>
           </div>
-          <img class="teacher" src="img/maid_teacher.png" alt="先生メイド" />
+          <img id="guestImage" class="guest" src="img/guest_normal.png" alt="ご主人様" />
+          <img id="teacherImage" class="teacher" src="img/maid_teacher.png" alt="先生メイド" />
         </section>
 
         <section class="bottom-area">
@@ -986,6 +1039,9 @@
           },
           {
             text: "ご主人様が『最近ラーメン屋巡りしてて』と話しました。良い返しは？",
+            scene: "guest",
+            guestLine: "最近ラーメン屋巡りしてて〜。休みの日に気になったお店へ行くのが楽しいんだよね。",
+            teacherLine: "ここは会話を広げるチャンスです♡ リアクション、褒め、質問の流れを意識して選んでみましょう。",
             choices: ["そうなんですね、で終わる", "えー！いいですね！○○さんグルメですね！最近どこ行ったんですか？", "私はラーメンよりパスタ派です、と自分の話に変える"],
             answer: 1,
             explain: "リアクション、褒め、自然な質問が入っている良い返しです。",
@@ -1014,6 +1070,9 @@
         questions: [
           {
             text: "ご主人様がスマホを見ています。自然な声かけは？",
+            scene: "guest",
+            guestLine: "……。",
+            teacherLine: "ご主人様がスマホを見ています。放置せず、自然に会話のきっかけを作ってみましょう♡",
             choices: ["何を見てるんですか？", "スマホやめてください", "そのまま放置する"],
             answer: 0,
             explain: "自然な興味として『何を見てるんですか？』と声をかけると会話につながります。",
@@ -1021,6 +1080,9 @@
           },
           {
             text: "ご主人様のドリンクが空いています。正しい声かけは？",
+            scene: "guest",
+            guestLine: "あ、もう飲み終わっちゃった。",
+            teacherLine: "ドリンクが空いたことに気づけたら、次の一杯を自然に伺いましょう♡",
             choices: ["次は何を飲みますか？", "空いてますね、で終わる", "忙しいので見なかったことにする"],
             answer: 0,
             explain: "ドリンクが空いたら、次のドリンクを自然に伺いましょう。",
@@ -1091,6 +1153,9 @@
         questions: [
           {
             text: "25分後にタイマーが鳴った時の声かけとして正しいものは？",
+            scene: "guest",
+            guestLine: "あれ、もうそんな時間？",
+            teacherLine: "5分前のお声がけは、言い方がとても大切です♡ 楽しい雰囲気を保ちながらご案内しましょう。",
             choices: ["お時間5分前になりました…もっとお話したいので、ご延長いかがですか？", "もう帰りますか？", "時間なので終わりです"],
             answer: 0,
             explain: "5分前確認は、明るく自然に延長のご案内をしましょう。",
@@ -1382,8 +1447,24 @@
 
       document.getElementById("chapterTitle").textContent = q.chapterTitle;
       document.getElementById("chapterNote").textContent = q.chapterNote;
-      document.getElementById("dialogueText").textContent = q.teacher;
       document.getElementById("questionText").textContent = q.text;
+
+      const guestImage = document.getElementById("guestImage");
+      const teacherImage = document.getElementById("teacherImage");
+      const infoCard = document.querySelector(".info-card");
+
+      if (q.scene === "guest") {
+        guestImage.classList.add("show");
+        teacherImage.classList.add("with-guest");
+        infoCard.classList.add("with-guest");
+        document.getElementById("dialogueText").textContent =
+          `ご主人様「${q.guestLine}」\n\n先生メイド「${q.teacherLine}」`;
+      } else {
+        guestImage.classList.remove("show");
+        teacherImage.classList.remove("with-guest");
+        infoCard.classList.remove("with-guest");
+        document.getElementById("dialogueText").textContent = q.teacher;
+      }
 
       const choices = document.getElementById("choices");
       choices.innerHTML = "";
