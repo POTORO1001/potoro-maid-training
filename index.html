@@ -573,6 +573,41 @@
     }
 
 
+
+    .satisfaction-box {
+      position: fixed;
+      left: 18px;
+      top: 18px;
+      z-index: 51;
+      display: none;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 16px;
+      border-radius: 999px;
+      color: var(--pink-dark);
+      background: rgba(255, 255, 255, 0.88);
+      border: 2px solid rgba(255, 207, 228, 0.9);
+      box-shadow: 0 8px 18px rgba(126, 64, 98, 0.14);
+      font-weight: 1000;
+      font-size: clamp(12px, 1.1vw, 16px);
+      backdrop-filter: blur(8px);
+    }
+
+    .satisfaction-box.show {
+      display: inline-flex;
+    }
+
+    .satisfaction-hearts {
+      letter-spacing: 0.1em;
+      color: #ff6faa;
+      text-shadow: 0 1px 0 #fff;
+    }
+
+    .guest.talk-mode {
+      height: min(62%, 520px);
+      max-width: 38%;
+    }
+
     .sound-toggle {
       position: fixed;
       right: 18px;
@@ -809,6 +844,7 @@
 
   <main class="app">
     <button id="soundToggle" class="sound-toggle" onclick="toggleBgm()">♪ BGM OFF</button>
+    <div id="satisfactionBox" class="satisfaction-box"><span>接客満足度</span><span id="satisfactionHearts" class="satisfaction-hearts">♡♡♡♡♡</span></div>
     <section id="startScreen" class="screen title-screen active">
       <div class="title-layer">
         <div class="title-panel">
@@ -1580,6 +1616,113 @@
             category: "気配り"
           }
         ]
+      },
+      {
+        title: "歓談・会話実践研修",
+        note: "会話の主役はご主人様。リアクション・褒め・質問で、気持ちよく話してもらいましょう♡",
+        teacher: "ここからは歓談タイムです♡ 大切なのは、メイドさんが話し続けることではなく、ご主人様が楽しく話せる空気を作ることです。",
+        questions: [
+          {
+            chapterTitle: "歓談・会話実践研修",
+            chapterNote: "リアクション → 褒める → 質問する、の流れを実践しましょう♡",
+            teacher: "ご主人様が趣味の話をしてくれました♡ ここは会話を広げるチャンスです。",
+            text: "ご主人様が『最近ラーメン屋巡りしてて〜』と話しました。良い返しは？",
+            scene: "guest",
+            guestImage: "img/guest_talk.png",
+            successGuestImage: "img/guest_happy.png",
+            failGuestImage: "img/guest_think.png",
+            satisfaction: true,
+            point: true,
+            pointText: "リアクション→褒め→質問",
+            background: "img/bg_drink.jpg",
+            guestLine: "最近ラーメン屋巡りしてて〜。休みの日に気になったお店へ行くのが楽しいんだよね。",
+            teacherLine: "リアクション、褒め、質問の順番を意識しましょう♡",
+            choices: [
+              "えー！いいですね！○○さんグルメですね！最近どこ行ったんですか？",
+              "そうなんですね",
+              "私はラーメンよりパスタ派です！"
+            ],
+            answer: 0,
+            explain: "リアクション、褒め、質問が自然に入っているので、ご主人様がさらに話しやすくなります。",
+            explanation: "リアクション、褒め、質問が自然に入っているので、ご主人様がさらに話しやすくなります。",
+            category: "会話力"
+          },
+          {
+            chapterTitle: "歓談・会話実践研修",
+            chapterNote: "疲れているご主人様には、まず共感と安心感を届けましょう♡",
+            teacher: "疲れているご主人様には、無理に盛り上げるより、まず気持ちに寄り添うことが大切です♡",
+            text: "ご主人様が『仕事忙しくて疲れちゃって〜』と話しました。良い返しは？",
+            scene: "guest",
+            guestImage: "img/guest_think.png",
+            successGuestImage: "img/guest_talk.png",
+            failGuestImage: "img/guest_think.png",
+            satisfaction: true,
+            point: true,
+            pointText: "共感",
+            background: "img/bg_drink.jpg",
+            guestLine: "最近、仕事忙しくて疲れちゃって〜。",
+            teacherLine: "まずは共感です♡ 自分の大変さをかぶせるより、相手の気持ちを受け止めましょう。",
+            choices: [
+              "大変でしたね…！今日ここではゆっくりしてくださいね♡",
+              "私ももっと大変なんですよ〜",
+              "へぇ、そうなんですね"
+            ],
+            answer: 0,
+            explain: "相手の疲れに共感し、安心できる一言を添えると会話の満足度が上がります。",
+            explanation: "相手の疲れに共感し、安心できる一言を添えると会話の満足度が上がります。",
+            category: "会話力"
+          },
+          {
+            chapterTitle: "歓談・会話実践研修",
+            chapterNote: "話題を変えすぎず、1つの話を深掘りしましょう♡",
+            teacher: "会話は話題をたくさん出すより、1つの話を深掘りすると自然に続きます♡",
+            text: "ご主人様が『旅行行ってきた！』と話しました。自然な深掘りは？",
+            scene: "guest",
+            guestImage: "img/guest_talk.png",
+            successGuestImage: "img/guest_happy.png",
+            failGuestImage: "img/guest_think.png",
+            satisfaction: true,
+            point: true,
+            pointText: "深掘り",
+            background: "img/bg_drink.jpg",
+            guestLine: "この前、旅行行ってきたんだ！",
+            teacherLine: "旅行の話は広げやすい話題です♡ どこへ、何を食べた、何が楽しかった、など自然に聞いてみましょう。",
+            choices: [
+              "えー！いいですね！どこに行ったんですか？何が一番楽しかったですか？",
+              "そうなんですね。ところで趣味は何ですか？",
+              "私は最近どこにも行ってないです"
+            ],
+            answer: 0,
+            explain: "相手の話題に沿って深掘りできているため、会話が自然に広がります。",
+            explanation: "相手の話題に沿って深掘りできているため、会話が自然に広がります。",
+            category: "会話力"
+          },
+          {
+            chapterTitle: "歓談・会話実践研修",
+            chapterNote: "スマホを見ている時は、放置せず自然に声をかけましょう♡",
+            teacher: "ご主人様がスマホを見ている時は、退屈しているサインかもしれません。自然な一言で会話のきっかけを作りましょう♡",
+            text: "ご主人様がスマホを見ています。自然な声かけは？",
+            scene: "guest",
+            guestImage: "img/guest_think.png",
+            successGuestImage: "img/guest_talk.png",
+            failGuestImage: "img/guest_think.png",
+            satisfaction: true,
+            point: true,
+            pointText: "放置防止",
+            background: "img/bg_drink.jpg",
+            guestLine: "……。",
+            teacherLine: "注意するのではなく、興味を持つ声かけがポイントです♡",
+            choices: [
+              "何を見てるんですか？",
+              "スマホやめてください",
+              "そのまま何も言わない"
+            ],
+            answer: 0,
+            explain: "自然に興味を示すことで、会話のきっかけを作れます。",
+            explanation: "自然に興味を示すことで、会話のきっかけを作れます。",
+            category: "気配り"
+          }
+        ]
       }
     ];
 
@@ -1704,6 +1847,8 @@
       "ポ・トロ理解度": 0
     };
 
+    let satisfactionScore = 3;
+
     function buildFlatQuestions() {
       flatQuestions = [];
       TRAINING_DATA.forEach((chapter, chapterIndex) => {
@@ -1745,12 +1890,32 @@
       correct = 0;
       answered = false;
       CATEGORY_KEYS.forEach(key => scores[key] = 0);
+      satisfactionScore = 3;
+      updateSatisfaction(false);
       showScreen("gameScreen");
       renderQuestion();
     }
 
     function restartGame() {
       startGame();
+    }
+
+
+    function updateSatisfaction(show = true) {
+      const box = document.getElementById("satisfactionBox");
+      const hearts = document.getElementById("satisfactionHearts");
+      if (!box || !hearts) return;
+
+      const safeScore = Math.max(0, Math.min(5, satisfactionScore));
+      hearts.textContent = "♥".repeat(safeScore) + "♡".repeat(5 - safeScore);
+      box.classList.toggle("show", !!show);
+    }
+
+    function setGuestImage(src) {
+      const guestImage = document.getElementById("guestImage");
+      if (!guestImage || !src) return;
+      guestImage.src = src;
+      guestImage.classList.toggle("talk-mode", src.includes("guest_talk") || src.includes("guest_think"));
     }
 
     function renderQuestion() {
@@ -1781,7 +1946,8 @@
         stage.style.backgroundImage = "url('img/bg_room.jpg')";
       }
 
-      guestImage.src = "img/guest_normal.png";
+      setGuestImage(q.guestImage || "img/guest_normal.png");
+      updateSatisfaction(!!q.satisfaction);
 
       const teacherSrc = q.point ? "img/maid_teacher_point.png" : "img/maid_teacher.png";
       if (!teacherImage.src.endsWith(teacherSrc)) {
@@ -1848,8 +2014,14 @@
 
       if (isCorrect) {
         if (flatQuestions[currentIndex].chapterTitle === "お出迎え研修") {
-          const guestImage = document.getElementById("guestImage");
-          guestImage.src = "img/guest_happy.png";
+          setGuestImage("img/guest_happy.png");
+        }
+        if (flatQuestions[currentIndex].successGuestImage) {
+          setGuestImage(flatQuestions[currentIndex].successGuestImage);
+        }
+        if (flatQuestions[currentIndex].satisfaction) {
+          satisfactionScore = Math.min(5, satisfactionScore + 1);
+          updateSatisfaction(true);
         }
         playSe("seCorrect");
         correct += 1;
@@ -1860,7 +2032,8 @@
       } else {
         if (flatQuestions[currentIndex].chapterTitle === "お出迎え研修") {
           const guestImage = document.getElementById("guestImage");
-          guestImage.src = "img/guest_normal.png";
+          setGuestImage(q.guestImage || "img/guest_normal.png");
+      updateSatisfaction(!!q.satisfaction);
         }
         playSe("seWrong");
         feedback.className = "feedback ng";
@@ -1887,6 +2060,7 @@
     function showResult() {
       document.getElementById("progressBar").style.width = "100%";
       playSe("seMagic");
+      updateSatisfaction(false);
       showScreen("resultScreen");
 
       const total = flatQuestions.length;
