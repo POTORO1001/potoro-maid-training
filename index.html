@@ -360,6 +360,44 @@
       width: min(38vw, 560px);
     }
 
+
+    .point-badge {
+      position: absolute;
+      left: 2%;
+      top: calc(3% + 178px);
+      z-index: 4;
+      display: none;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 18px;
+      border-radius: 999px;
+      color: #fff;
+      background: linear-gradient(90deg, #ff7fb5, #b58cff);
+      box-shadow: 0 12px 24px rgba(255, 127, 181, 0.28);
+      font-size: clamp(14px, 1.4vw, 20px);
+      font-weight: 1000;
+      letter-spacing: 0.05em;
+      animation: pointPop 0.36s ease both;
+    }
+
+    .point-badge.show {
+      display: inline-flex;
+    }
+
+    @keyframes pointPop {
+      from { opacity: 0; transform: translateY(10px) scale(0.92); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    .teacher.pointing {
+      animation: teacherPointIn 0.34s ease both;
+    }
+
+    @keyframes teacherPointIn {
+      from { opacity: 0; transform: translateX(26px) scale(0.96); }
+      to { opacity: 1; transform: translateX(0) scale(1); }
+    }
+
     .info-card {
       position: absolute;
       left: 2%;
@@ -682,7 +720,50 @@
         width: 40vw;
       }
 
-      .info-card {
+      .point-badge {
+        top: calc(2% + 150px);
+        left: 2%;
+      }
+
+  
+    .point-badge {
+      position: absolute;
+      left: 2%;
+      top: calc(3% + 178px);
+      z-index: 4;
+      display: none;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 18px;
+      border-radius: 999px;
+      color: #fff;
+      background: linear-gradient(90deg, #ff7fb5, #b58cff);
+      box-shadow: 0 12px 24px rgba(255, 127, 181, 0.28);
+      font-size: clamp(14px, 1.4vw, 20px);
+      font-weight: 1000;
+      letter-spacing: 0.05em;
+      animation: pointPop 0.36s ease both;
+    }
+
+    .point-badge.show {
+      display: inline-flex;
+    }
+
+    @keyframes pointPop {
+      from { opacity: 0; transform: translateY(10px) scale(0.92); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    .teacher.pointing {
+      animation: teacherPointIn 0.34s ease both;
+    }
+
+    @keyframes teacherPointIn {
+      from { opacity: 0; transform: translateX(26px) scale(0.96); }
+      to { opacity: 1; transform: translateX(0) scale(1); }
+    }
+
+    .info-card {
         width: 55vw;
         top: 2%;
       }
@@ -774,6 +855,7 @@
             <h2 id="chapterTitle">メイド名を決めよう</h2>
             <p id="chapterNote"></p>
           </div>
+          <div id="pointBadge" class="point-badge">POINT! 重要ポイント</div>
           <img id="guestImage" class="guest" src="img/guest_normal.png" alt="ご主人様" />
           <img id="teacherImage" class="teacher" src="img/maid_teacher.png" alt="先生メイド" />
         </section>
@@ -843,6 +925,8 @@
         questions: [
           {
             text: "メイド名を決める時、正しい考え方はどれ？",
+            point: true,
+            pointText: "身バレ防止",
             choices: ["本名を少しだけ変えた名前にする", "好きな食べ物やキャラクターなどから自由に考える", "学校や職場で呼ばれているあだ名を使う"],
             answer: 1,
             explain: "メイド名は自由に考えてOKですが、本名や身元につながる名前は避けます。",
@@ -934,6 +1018,8 @@
         questions: [
           {
             text: "入口のピンポンが鳴りました。最優先で行うことは？",
+            point: true,
+            pointText: "お出迎え最優先",
             choices: ["今の会話を続ける", "お出迎えに行く", "ドリンク作成を始める"],
             answer: 1,
             explain: "お出迎えは最重要です。入口まで行き、明るくご挨拶しましょう。",
@@ -976,6 +1062,8 @@
           },
           {
             text: "チェキや有料フード提供時の正しい流れは？",
+            point: true,
+            pointText: "前金制",
             choices: ["先に提供して、帰りにまとめて会計", "お代をいただき、日計表に記帳してから提供", "仲良しのご主人様なら後払いでよい"],
             answer: 1,
             explain: "前金制のため、サービス提供はすべてお代をいただいてからです。",
@@ -1025,6 +1113,8 @@
         questions: [
           {
             text: "会話で一番大切な考え方は？",
+            point: true,
+            pointText: "会話の主役は相手",
             choices: ["自分が面白い話をし続ける", "相手に気持ちよく話してもらう", "沈黙を全部自分で埋める"],
             answer: 1,
             explain: "接客では『自分が話して満足』ではなく『相手が話して満足』が大切です。",
@@ -1125,6 +1215,8 @@
           },
           {
             text: "撮影中にご主人様から接触を求められました。正しい対応は？",
+            point: true,
+            pointText: "接触禁止",
             choices: ["少しだけならOK", "『おうまさんに怒られるので』と断る", "無言で我慢する"],
             answer: 1,
             explain: "撮影中の接触は禁止です。困った時は断り、必要なら相談しましょう。",
@@ -1191,6 +1283,8 @@
         questions: [
           {
             text: "ご主人様に『連絡先教えて』と言われました。正しい返答は？",
+            point: true,
+            pointText: "個人情報NG",
             choices: ["お屋敷までお願いします♡", "あとで個人SNSを教えます", "仲良くなったら教えます"],
             answer: 0,
             explain: "連絡先は教えず、『お屋敷までお願いします♡』と返しましょう。",
@@ -1226,6 +1320,8 @@
         questions: [
           {
             text: "トラブル時の正しい対応は？",
+            point: true,
+            pointText: "すぐ相談",
             choices: ["一人で抱え込む", "遠慮なくおうまさんへ相談する", "ご主人様に判断してもらう"],
             answer: 1,
             explain: "トラブル時は一人で抱えず、おうまさんへ相談しましょう。",
@@ -1452,6 +1548,20 @@
       const guestImage = document.getElementById("guestImage");
       const teacherImage = document.getElementById("teacherImage");
       const infoCard = document.querySelector(".info-card");
+      const pointBadge = document.getElementById("pointBadge");
+
+      const teacherSrc = q.point ? "img/maid_teacher_point.png" : "img/maid_teacher.png";
+      if (!teacherImage.src.endsWith(teacherSrc)) {
+        teacherImage.src = teacherSrc;
+      }
+
+      teacherImage.classList.toggle("pointing", !!q.point);
+      pointBadge.classList.toggle("show", !!q.point);
+      pointBadge.textContent = q.point ? `POINT! ${q.pointText || "重要ポイント"}` : "";
+
+      if (q.point) {
+        playSe("seMagic");
+      }
 
       if (q.scene === "guest") {
         guestImage.classList.add("show");
