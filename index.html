@@ -954,6 +954,7 @@
   <audio id="seMagic" src="audio/magic.mp3" preload="auto"></audio>
   <audio id="bgmMain" src="audio/bgm_main.mp3" preload="auto" loop></audio>
   <audio id="doorbellSe" src="audio/doorbell.mp3" preload="auto"></audio>
+  <audio id="timerSe" src="audio/timer.mp3" preload="auto"></audio>
 
   <script>
     // ============================================================
@@ -1855,6 +1856,139 @@
             category: "ポ・トロ理解度"
           }
         ]
+      },
+      {
+        title: "延長確認・お見送り研修",
+        note: "25分タイマー後の5分前確認、延長案内、お見送りの流れを確認しましょう♡",
+        teacher: "楽しい時間の終盤こそ、丁寧なご案内が大切です♡ 延長確認からお見送りまで、最後まで笑顔で対応しましょう。",
+        questions: [
+          {
+            chapterTitle: "延長確認・お見送り研修",
+            chapterNote: "25分後にタイマーが鳴ったら、5分前確認を行います♡",
+            teacher: "タイマーが鳴りました♡ ここからは5分前確認です。言い方ひとつで印象が変わります。",
+            text: "25分後にタイマーが鳴りました。正しい声かけは？",
+            scene: "guest",
+            guestImage: "img/guest_talk.png",
+            successGuestImage: "img/guest_happy.png",
+            failGuestImage: "img/guest_think.png",
+            satisfaction: true,
+            point: true,
+            pointText: "5分前確認",
+            background: "img/bg_timer.jpg",
+            sound: "timerSe",
+            guestLine: "あれ、もうそんな時間？",
+            teacherLine: "お時間のご案内は、冷たくならないようにしましょう♡",
+            choices: [
+              "お時間5分前になりました…もっとお話したいので、ご延長いかがですか？",
+              "時間です。帰りますか？",
+              "何も言わずに時間が過ぎるのを待つ"
+            ],
+            answer: 0,
+            explain: "25分後にタイマーが鳴ったら、5分前確認として明るく自然に延長をご案内します。",
+            explanation: "25分後にタイマーが鳴ったら、5分前確認として明るく自然に延長をご案内します。",
+            category: "接客力"
+          },
+          {
+            chapterTitle: "延長確認・お見送り研修",
+            chapterNote: "延長時も前金制です。お代金をいただき、30分再セットします♡",
+            teacher: "ご延長いただける場合も、前金制の流れを忘れないようにしましょう♡",
+            text: "ご主人様が延長すると言いました。正しい流れは？",
+            scene: "guest",
+            guestImage: "img/guest_happy.png",
+            successGuestImage: "img/guest_happy.png",
+            failGuestImage: "img/guest_think.png",
+            satisfaction: true,
+            point: true,
+            pointText: "延長も前金制",
+            background: "img/bg_timer.jpg",
+            guestLine: "じゃあ、もう30分延長しようかな！",
+            teacherLine: "ありがとうございます♡ 延長時もお代金をいただいてから、タイマーを再セットします。",
+            choices: [
+              "お代金をいただき、30分タイマーを再セットする",
+              "会計は帰りにまとめて行う",
+              "タイマーをセットせず会話を続ける"
+            ],
+            answer: 0,
+            explain: "延長も前金制です。お代金をいただいてから、30分タイマーを再セットします。",
+            explanation: "延長も前金制です。お代金をいただいてから、30分タイマーを再セットします。",
+            category: "ポ・トロ理解度"
+          },
+          {
+            chapterTitle: "延長確認・お見送り研修",
+            chapterNote: "終了の場合は、5分再セット後にお見送りをします♡",
+            teacher: "ご出発の場合も、最後の印象が大切です♡ 5分後に明るくお見送りしましょう。",
+            text: "ご主人様が終了すると言いました。正しい流れは？",
+            scene: "guest",
+            guestImage: "img/guest_talk.png",
+            successGuestImage: "img/guest_happy.png",
+            failGuestImage: "img/guest_think.png",
+            satisfaction: true,
+            point: true,
+            pointText: "終了時の流れ",
+            background: "img/bg_timer.jpg",
+            guestLine: "今日はそろそろ出発しようかな。",
+            teacherLine: "ご出発の場合は、5分再セットしてからお見送りします♡",
+            choices: [
+              "5分再セットし、5分後にお見送りする",
+              "すぐに急いで出てもらう",
+              "何も案内せず放置する"
+            ],
+            answer: 0,
+            explain: "終了の場合は5分再セットし、5分後に『いってらっしゃいませー♡』でお見送りします。",
+            explanation: "終了の場合は5分再セットし、5分後に『いってらっしゃいませー♡』でお見送りします。",
+            category: "接客力"
+          },
+          {
+            chapterTitle: "延長確認・お見送り研修",
+            chapterNote: "お見送り時は、店外に出ず、帰り際の長話をしないようにします♡",
+            teacher: "お見送りは大切ですが、店外には出ません。帰り際の長話も避けましょう♡",
+            text: "お見送り時の注意点として正しいものは？",
+            scene: "guest",
+            guestImage: "img/guest_leave.png",
+            successGuestImage: "img/guest_leave.png",
+            failGuestImage: "img/guest_think.png",
+            satisfaction: true,
+            point: true,
+            pointText: "店外に出ない",
+            background: "img/bg_timer.jpg",
+            guestLine: "楽しかったです！また来ますね！",
+            teacherLine: "最後は『いってらっしゃいませー♡』で明るくお見送りしましょう。",
+            choices: [
+              "店外には出ず、帰り際の長話をしない",
+              "店外まで一緒についていく",
+              "握手やハグをして見送る"
+            ],
+            answer: 0,
+            explain: "お見送り時は店外には出ず、帰り際の長話・握手・ハグは禁止です。",
+            explanation: "お見送り時は店外には出ず、帰り際の長話・握手・ハグは禁止です。",
+            category: "安心安全"
+          },
+          {
+            chapterTitle: "延長確認・お見送り研修",
+            chapterNote: "ご出発時のまじかるわーどを確認しましょう♡",
+            teacher: "ご出発時は、全員で明るくお見送りできると素敵です♡",
+            text: "ご出発時の正しいまじかるわーどは？",
+            scene: "guest",
+            guestImage: "img/guest_leave.png",
+            successGuestImage: "img/guest_leave.png",
+            failGuestImage: "img/guest_think.png",
+            satisfaction: true,
+            point: true,
+            pointText: "ご出発の挨拶",
+            background: "img/bg_timer.jpg",
+            guestLine: "また来ます！",
+            teacherLine: "ポ・トロでのご出発時の言葉を確認しましょう♡",
+            choices: [
+              "いってらっしゃいませー♡",
+              "ありがとうございました",
+              "さようなら"
+            ],
+            answer: 0,
+            explain: "ご出発時は『いってらっしゃいませー♡』でお見送りします。",
+            explanation: "ご出発時は『いってらっしゃいませー♡』でお見送りします。",
+            category: "ポ・トロ理解度"
+          }
+        ]
       }
     ];
 
@@ -1885,7 +2019,7 @@
       if (audioUnlocked) return;
       audioUnlocked = true;
 
-      const audioIds = ["seClick", "seCorrect", "seWrong", "seMagic", "bgmMain", "doorbellSe"];
+      const audioIds = ["seClick", "seCorrect", "seWrong", "seMagic", "bgmMain", "doorbellSe", "timerSe"];
       audioIds.forEach(id => {
         const audio = getAudio(id);
         if (!audio) return;
@@ -2096,6 +2230,10 @@
 
       if (q.chapterTitle === "お出迎え研修") {
         playSe("doorbellSe");
+      }
+
+      if (q.sound) {
+        playSe(q.sound);
       }
 
       if (q.scene === "guest") {
