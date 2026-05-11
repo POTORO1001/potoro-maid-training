@@ -304,6 +304,19 @@
       min-height: 0;
       border-radius: 26px;
       overflow: hidden;
+      background-image: url("img/bg_room.jpg");
+      background-position: center center;
+      background-size: cover;
+      background-repeat: no-repeat;
+      transition: background-image 0.28s ease, filter 0.28s ease;
+    }
+
+    .stage::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, rgba(255, 247, 251, 0.42), rgba(255, 255, 255, 0.12));
+      pointer-events: none;
     }
 
     .teacher {
@@ -904,6 +917,7 @@
   <audio id="seWrong" src="audio/wrong.mp3" preload="auto"></audio>
   <audio id="seMagic" src="audio/magic.mp3" preload="auto"></audio>
   <audio id="bgmMain" src="audio/bgm_main.mp3" preload="auto" loop></audio>
+  <audio id="doorbellSe" src="audio/doorbell.mp3" preload="auto"></audio>
 
   <script>
     // ============================================================
@@ -1356,6 +1370,34 @@
             category: "ポ・トロ理解度"
           }
         ]
+      },
+      {
+        title: "お出迎え研修",
+        note: "ご主人様を笑顔でお出迎えしましょう♡",
+        teacher: "いよいよ実践です♡ ピンポンが鳴ったら、まずはお出迎えです！",
+        questions: [
+          {
+            chapterTitle: "お出迎え研修",
+            chapterNote: "ご主人様を笑顔でお出迎えしましょう♡",
+            teacher: "いよいよ実践です♡ ピンポンが鳴ったら、まずはお出迎えです！",
+            text: "ご主人様がご帰宅されました。どうお出迎えしますか？",
+            scene: "guest",
+            point: true,
+            pointText: "お出迎え最優先",
+            background: "img/bg_entrance.jpg",
+            guestLine: "（ドアを開けて入店）",
+            teacherLine: "ポ・トロでは、ご主人様を“おかえりなさいませ♡”でお迎えします！",
+            choices: [
+              "おかえりなさいませー♡",
+              "いらっしゃいませ",
+              "……（無言）"
+            ],
+            answer: 0,
+            explain: "ポ・トロでは『おかえりなさいませー♡』が基本のお出迎えです！",
+            explanation: "ポ・トロでは『おかえりなさいませー♡』が基本のお出迎えです！",
+            category: "接客力"
+          }
+        ]
       }
     ];
 
@@ -1386,7 +1428,7 @@
       if (audioUnlocked) return;
       audioUnlocked = true;
 
-      const audioIds = ["seClick", "seCorrect", "seWrong", "seMagic", "bgmMain"];
+      const audioIds = ["seClick", "seCorrect", "seWrong", "seMagic", "bgmMain", "doorbellSe"];
       audioIds.forEach(id => {
         const audio = getAudio(id);
         if (!audio) return;
@@ -1487,9 +1529,9 @@
           flatQuestions.push({
             chapterIndex,
             questionIndex,
-            chapterTitle: chapter.title,
-            chapterNote: chapter.note,
-            teacher: chapter.teacher,
+            chapterTitle: question.chapterTitle || chapter.title,
+            chapterNote: question.chapterNote || chapter.note,
+            teacher: question.teacher || chapter.teacher,
             ...question
           });
         });
@@ -1549,6 +1591,15 @@
       const teacherImage = document.getElementById("teacherImage");
       const infoCard = document.querySelector(".info-card");
       const pointBadge = document.getElementById("pointBadge");
+      const stage = document.querySelector(".stage");
+
+      if (q.background) {
+        stage.style.backgroundImage = `url(${q.background})`;
+      } else {
+        stage.style.backgroundImage = "url('img/bg_room.jpg')";
+      }
+
+      guestImage.src = "img/guest_normal.png";
 
       const teacherSrc = q.point ? "img/maid_teacher_point.png" : "img/maid_teacher.png";
       if (!teacherImage.src.endsWith(teacherSrc)) {
@@ -1561,6 +1612,10 @@
 
       if (q.point) {
         playSe("seMagic");
+      }
+
+      if (q.chapterTitle === "お出迎え研修") {
+        playSe("doorbellSe");
       }
 
       if (q.scene === "guest") {
@@ -1610,6 +1665,10 @@
       const feedback = document.getElementById("feedback");
 
       if (isCorrect) {
+        if (flatQuestions[currentIndex].chapterTitle === "お出迎え研修") {
+          const guestImage = document.getElementById("guestImage");
+          guestImage.src = "img/guest_happy.png";
+        }
         playSe("seCorrect");
         correct += 1;
         scores[q.category] += 10;
@@ -1617,6 +1676,10 @@
         feedback.textContent = `正解です♡ ${q.explain}`;
         document.getElementById("dialogueText").textContent = `素晴らしいです♡ ${q.explain}`;
       } else {
+        if (flatQuestions[currentIndex].chapterTitle === "お出迎え研修") {
+          const guestImage = document.getElementById("guestImage");
+          guestImage.src = "img/guest_normal.png";
+        }
         playSe("seWrong");
         feedback.className = "feedback ng";
         feedback.textContent = `不正解です。正解は「${q.choices[q.answer]}」。${q.explain}`;
